@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 {% block conteudo %}
-    <h1 class="text-center mt-2"> Página do Aluno </h1>
+    <h1 class="text-center mt-3"> Página do Aluno </h1>
     <div class="mt-5 px-5">
-        <div class="container border border-primary mt-3 content-section" >
+        <div class="container shadow p-4 mb-5 bg-white rounded m-5 " >
             <p>
                 Você gostaria de consultar informações sobre sua nota, presença e situação?
             </p>
             <a class="btn btn-primary" href="{{url_for('aluno_consulta', info='situacao')}}"> Consultar Situação </a>
         </div>
-        <div class="container border border-secondary mt-3 content-section" >
+        <div class="container shadow p-4 mb-5 bg-white rounded m-5 " >
             <p>
                 Ou gostaria de consultar informações sobre um a matéria que um professor ensina?
             </p>
