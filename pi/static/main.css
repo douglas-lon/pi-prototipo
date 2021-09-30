@@ -1,9 +1,22 @@
 @charset "UTF-8";
 
+html,
+body {
+  height: 100%;
+}
+
 .vertical-center {
     min-height: 100%; 
     min-height: 100vh; 
   
     display: flex;
     align-items: center;
+  }
+
+.content-section {
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
   }
