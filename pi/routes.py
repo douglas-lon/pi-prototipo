@@ -1,6 +1,6 @@
 from flask import render_template, url_for, abort, redirect, flash
 from pi import app
-from pi.forms import LoginProfessorForm
+from pi.forms import LoginProfessorForm, RegistroProfessorForm
 
 
 @app.route("/")
@@ -39,3 +39,12 @@ def login():
         return redirect(url_for('professor'))
 
     return render_template('login.html', titulo='Login', form=form, user="login")
+
+
+@app.route("/registrar/", methods=["GET", "POST"])
+def registrar():
+    form = RegistroProfessorForm()
+    if form.validate_on_submit():
+        return redirect(url_for('login'))
+
+    return render_template('registrar.html', titulo='Registrar', form=form, user="registro")
