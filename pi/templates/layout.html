@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<!--
+    Pagina de modelo para todas as outras
+-->
 <html lang="pt-br">
     <head>
         <meta charset="UTF-8">
@@ -22,22 +25,25 @@
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="navbar-collapse collapse" id="navbarSupportedContent">
-                            {% if user == 'professor' %}
+                            {% if current_user.is_authenticated %}
                                 <div class="navbar-nav mr-auto">
-                                    <a class="nav-item nav-link" href=" {{ url_for(user) }} ">Home</a>
-                                </div>
-                                <div class="navbar-nav ms-auto">
+                                    <a class="nav-item nav-link" href=" {{ url_for('professor') }} "> Página do Professor </a>
                                     <a class="nav-item nav-link" href="#"> Consultar </a>
                                     <a class="nav-item nav-link" href="#"> Registrar </a>
                                 </div>
-                            {% elif user == 'aluno' %}
-                                <div class="navbar-nav mr-auto">
-                                    <a class="nav-item nav-link" href=" {{ url_for(user) }} ">Página do Aluno</a>
+                                <div class="navbar-nav ms-auto">
+                                    <a class="nav-item nav-link" href=" {{ url_for('logout') }}"> Sair </a>
                                 </div>
                             {% else %}
-                                <div class="navbar-nav mr-auto">
-                                    <a class="nav-item nav-link" href=" {{ url_for('home') }} ">Página Inicial</a>
-                                </div>
+                                {% if user == 'aluno' %}
+                                    <div class="navbar-nav mr-auto">
+                                        <a class="nav-item nav-link" href=" {{ url_for(user) }} ">Página do Aluno</a>
+                                    </div>
+                                {% else %}
+                                    <div class="navbar-nav mr-auto">
+                                        <a class="nav-item nav-link" href=" {{ url_for('home') }} ">Página Inicial</a>
+                                    </div>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </div>

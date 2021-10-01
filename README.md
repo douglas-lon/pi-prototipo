@@ -4,8 +4,10 @@
 
 * Python 3.8+
 * Flask modulo
-* Flask_wtf
+* Flask-WTF
 * Flask-SQLAlchemy
+* Flask-Bcrypt
+* Flask-Login
 
 ## Instalação Flask
 No terminal digite:
@@ -19,6 +21,8 @@ No terminal digite:
 pip install flask-wtf
 pip install email_validator
 pip install flask-sqlalchemy
+pip install flask-bcrypt
+pip install flask-login
 ```
 
 ## Iniciar a aplicação
