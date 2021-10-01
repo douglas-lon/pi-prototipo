@@ -1,6 +1,6 @@
-{% extends "layout.html" %}
-{% block conteudo %}
-    <div class="shadow p-4 mb-5 bg-white rounded m-5 ">
+{% extends "professor_layout.html" %}
+{% block prof %}
+    <div class="col shadow p-4 mb-5 bg-white rounded m-5">
         <form action="" method="POST">
             {{ form.hidden_tag() }}
             <fieldset class="row g-3">
@@ -90,8 +90,8 @@
                         {% endif %}
                     </div>
                 {% else %}
-                <legend class=""> Registrar Materia </legend>
-                <div class="col-md-6">
+                    <legend class=""> Registrar Materia </legend>
+                    <div class="col-md-6">
                     {{ form.nome.label(class="form-control-label") }}
 
                     {% if form.nome.errors %}
@@ -112,4 +112,4 @@
             </div>
         </form>
     </div>
-{% endblock conteudo %}
+{% endblock prof %}

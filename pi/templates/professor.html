@@ -1,33 +1,6 @@
-{% extends "layout.html"%}
-{% block conteudo %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-2 shadow pt-4 rounded" style="height:100vh;">
-                <ul class="text-start">
-                    <li class="border-bottom border-2 fw-bold "> Aluno </li>
-                    <ul>
-                        <li class="mt-1"> <a href=""> Adicionar Aluno </a> </li>
-                        <li class="mt-1"> <a href=""> Consultar Aluno </a> </li>
-                        <li class="mt-1"> <a href=""> Adicionar Notas </a> </li>
-                    </ul>
-
-                    <li class="mt-2 border-bottom border-2 fw-bold"> Professor </li>
-                    <ul>
-                        <li class="mt-1"> <a href=" {{ url_for('registrar') }} "> Cadastrar Professor </a></li>
-                        <li class="mt-1"> <a href=""> Gerenciar Professores </a> </li>
-                        <li class="mt-1"> <a href=""> Atualizar Professor </a> </li>
-                    </ul>
-
-                    <li class="mt-2 border-bottom border-2 fw-bold"> Matérias </li>
-                    <ul>
-                        <li class="mt-1"> <a href=" {{ url_for('registrar_materia') }} "> Adicionar Matéria </a> </li>
-                        <li class="mt-1"> <a href=""> Gerenciar Matérias </a> </li>
-                    </ul>
-                </ul>
-            </div>
-            <div class="col">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloremque voluptates provident quia culpa maxime explicabo cupiditate, repellendus nisi qui tenetur molestiae officiis excepturi similique possimus pariatur minima, magni debitis soluta?
-            </div>
-          </div>
-    </div>
-{% endblock conteudo %}
+{% extends "professor_layout.html"%}
+{% block prof %}
+    <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sint corporis voluptatem perferendis nobis, aut reprehenderit hic? Deleniti, inventore eius ipsam ipsa debitis fugit vero unde, laborum ipsum hic, asperiores repellat!
+    </p>
+{% endblock prof %}

@@ -1,0 +1,44 @@
+{% extends "layout.html"%}
+{% block conteudo %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 shadow pt-4 rounded" style="height:100vh;">
+                <ul class="text-start">
+                    <li class="border-bottom border-2 fw-bold "> Aluno </li>
+                    <ul>
+                        <li class="mt-1"> <a href=""> Adicionar Aluno </a> </li>
+                        <li class="mt-1"> <a href=""> Consultar Aluno </a> </li>
+                        <li class="mt-1"> <a href=""> Adicionar Notas </a> </li>
+                    </ul>
+
+                    <li class="mt-2 border-bottom border-2 fw-bold"> Professor </li>
+                    <ul>
+                        <li class="mt-1"> <a href=" {{ url_for('registrar') }} "> Cadastrar Professor </a></li>
+                        <li class="mt-1"> <a href=""> Gerenciar Professores </a> </li>
+                        <li class="mt-1"> <a href=""> Atualizar Professor </a> </li>
+                    </ul>
+
+                    <li class="mt-2 border-bottom border-2 fw-bold"> Matérias </li>
+                    <ul>
+                        <li class="mt-1"> <a href=" {{ url_for('registrar_materia') }} "> Adicionar Matéria </a> </li>
+                        <li class="mt-1"> <a href=" {{ url_for('gerenciar_materia') }} "> Gerenciar Matérias </a> </li>
+                    </ul>
+                </ul>
+            </div>
+            <div class="col">
+                {% with messages = get_flashed_messages(with_categories=true)%}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} m-3">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif%}
+                {% endwith %}
+
+                {% block prof%}
+                {% endblock prof%}
+            </div>
+          </div>
+    </div>
+{% endblock conteudo %}

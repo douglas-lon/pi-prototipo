@@ -5,21 +5,18 @@ from wtforms.validators import (DataRequired,
                                 EqualTo, Length,
                                 )
 from pi.models import Materia, Professor
+from pi.utils import choices
 
 
 # Cria o formulário html, utilizando alguns validadores
 # nomes dos validadores e dos campos estão em inglês mas são
 # autoexplicativos
 class RegistroProfessorForm(FlaskForm):
-
     nome = StringField('Nome', validators=[DataRequired()])
     sobrenome = StringField('Sobrenome', validators=[DataRequired()])
     # cpf = StringField('CPF', validators=[DataRequired(), Length(min=9, max=14)])
     materia = SelectField('Matéria', 
-                           choices=[
-                                ('2', 'Matemática'),
-                                ('1', 'MateriaTest')
-                                ])
+                           choices=choices)
     email = StringField('E-mail', validators=[DataRequired(), Email()])
     senha = PasswordField('Senha', 
                            validators=[DataRequired(),
@@ -31,6 +28,7 @@ class RegistroProfessorForm(FlaskForm):
                                                 Length(min=8, max=30)
                                                 ])
     enviar = SubmitField('Registrar-Se')
+
 
     # Valida a senha e impede que uma senha tenha
     # espaços como informação

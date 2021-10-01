@@ -3,6 +3,7 @@ from pi import app, db, bcrypt, login_manager
 from pi.forms import LoginProfessorForm, RegistroProfessorForm, RegistroMateriaForm
 from pi.models import Professor, Materia
 from flask_login import login_user, current_user, logout_user, login_required
+from pi.utils import choices, atualiza_escolhas
 
 
 
@@ -96,6 +97,7 @@ def login():
 def registrar():
     # Se o formulário passar as validações especificadas
     # no forms.py para ele, irá registrar o professor
+
     form = RegistroProfessorForm()
     if form.validate_on_submit():
         # criptografa senha para não salva-la em texto
@@ -137,11 +139,49 @@ def registrar_materia():
         db.session.commit()
         flash(f'A matéria {form.nome.data} foi adicionada!', 'success')
 
+        atualiza_escolhas(choices)
+
         return redirect(url_for('professor'))
 
     return render_template('registrar.html', 
                            titulo='Registrar Materia', 
                            form=form, user="materia")
+
+@app.route("/gerenciar/materia/", methods=["GET", "POST"])
+@login_required
+def gerenciar_materia():
+    page = request.args.get('page', 1, type=int)
+    if request.method == 'POST':
+        t = request.form['text']
+        try:
+            t = int(t)
+        except:
+            flash('Digite um número de id!', 'info')
+            return redirect(url_for('gerenciar_materia'))
+        print('===========')
+        print(t)
+        print('===========')
+        return redirect(url_for('apagar_materia', id_materia=t))
+
+    materias = Materia.query.paginate(per_page=8)
+    return render_template('gerenciar.html', 
+                            titulo='Gerenciar Materia', 
+                            user='materia',
+                            lista_materias=materias)
+
+@app.route("/gerenciar/materia/apagar/<id_materia>", methods=['GET', 'POST'])
+@login_required
+def apagar_materia(id_materia):
+    materia = Materia.query.get_or_404(id_materia)
+    try:
+        materia_nome = materia.nome
+    except:
+        flash('Você tentou apagar um matéria que não existe', 'danger')
+        return redirect(url_for('gerenciar_materia'))
+    db.session.delete(materia)
+    db.session.commit()
+    flash(f'A matéria {materia_nome} foi deletada!', 'success')
+    return redirect(url_for('gerenciar_materia'))
 
 @app.route("/logout/")
 def logout():
