@@ -88,7 +88,7 @@ def login():
             flash('Falha no login. Por favor cheque email e senha.', 'danger')
 
     return render_template('login.html', 
-                            titulo='Login', form=form, titulo='Login', user="login")
+                            titulo='Login', form=form, user="login")
 
 
 @app.route("/registrar/", methods=["GET", "POST"])
