@@ -2,7 +2,7 @@
 
 html,
 body {
-  height: 100%;
+  height: 100vh;
 }
 
 .vertical-center {
@@ -21,3 +21,12 @@ body {
     border-radius: 3px;
     margin-bottom: 20px;
   }
+
+/* Sidebar */
+ul {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+}

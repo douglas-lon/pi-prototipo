@@ -59,7 +59,10 @@ class LoginProfessorForm(FlaskForm):
 
 
 class RegistroMateriaForm(FlaskForm):
-    nome = StringField('Nome da Matéria', validators=[DataRequired()])
+    nome = StringField('Nome da Matéria', 
+                        validators=[DataRequired(),
+                        Length(min=2)
+                        ])
     enviar = SubmitField('Registrar Matéria')
 
     # Verifica se a materia ja está cadastrado, porque ao tentar cadastrar
