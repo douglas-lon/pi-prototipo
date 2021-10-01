@@ -1,6 +1,7 @@
 from flask import render_template, url_for, abort, redirect, flash
 from pi import app
 from pi.forms import LoginProfessorForm, RegistroProfessorForm
+from pi.models import Professor
 
 
 @app.route("/")
@@ -36,7 +37,12 @@ def professor():
 def login():
     form = LoginProfessorForm()
     if form.validate_on_submit():
-        return redirect(url_for('professor'))
+        professor = Professor.query.filter_by(email=form.email.data).first()
+        
+        if professor:
+            return redirect(url_for('professor'))
+        else:
+            flash('Falha no login. Por favor cheque email e senha.', 'danger')
 
     return render_template('login.html', titulo='Login', form=form, user="login")
 
@@ -45,6 +51,7 @@ def login():
 def registrar():
     form = RegistroProfessorForm()
     if form.validate_on_submit():
+        flash(f'Conta cria para {form.nome.data}!', 'success')
         return redirect(url_for('login'))
 
     return render_template('registrar.html', titulo='Registrar', form=form, user="registro")

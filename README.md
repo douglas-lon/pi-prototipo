@@ -5,7 +5,7 @@
 * Python 3.8+
 * Flask modulo
 * Flask_wtf
-* WTForms
+* Flask-SQLAlchemy
 
 ## Instalação Flask
 No terminal digite:
@@ -18,6 +18,7 @@ No terminal digite:
 ```
 pip install flask-wtf
 pip install email_validator
+pip install flask-sqlalchemy
 ```
 
 ## Iniciar a aplicação
