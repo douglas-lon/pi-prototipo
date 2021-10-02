@@ -63,13 +63,12 @@
                     </div>
                 {% endif %}
             </fieldset>
-            <div class="row">
-                <div class="col-md-6 mt-2">
-                    {{ form.atualizar(class="btn btn-primary") }}
-                    
-                </div>
-                <div class="col text-end mt-2">
-                    <a class="btn btn-primary" href=" {{url_for('trocar_senha', id_professor=id_professor)}} "> Trocar senha </a>
+            <div class="row p-3">
+                {{ form.atualizar(class="btn btn-primary col-2 me-3") }}
+                <a class="btn btn-primary col-2 ms-3" href=" {{url_for('trocar_senha', id_professor=id_professor)}} "> Trocar senha </a>
+                <div class="col text-end">
+                    {% set info_string = id_professor ~ ';professor;False' %}
+                    <a class="btn btn-danger" href=" {{ url_for('apagar', info=info_string ) }} "> Apagar Professor </a>
                 </div>
             </div>
         </form>

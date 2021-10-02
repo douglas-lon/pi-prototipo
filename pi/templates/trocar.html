@@ -61,15 +61,18 @@
             </div>
         </form>
     </div>
-    <div class="shadow p-4 mb-5 bg-white rounded m-5">
-        <div class="text-center">
-            <p>
-                Não é aconselhado a apagar um matéria, se a troca do nome conseguir resolver o que está querendo fazer prefira só trocar o nome. <br>
-                Pois o apagamento de um matéria pode levar a erros de registro onde alunos ou professor que tinham essa matéria, ficaram salvos com uma matéria que não existe o que pode impossibilitar de consultas em tais alvos. <br>
-                Se mesmo assim você quiser apaga-la, clique no botão abaixo:
-            </p>
-            <a class="btn btn-danger" href=""> Apagar Materia </a>
+    {% if user == 'materia' %}
+        <div class="shadow p-4 mb-5 bg-white rounded m-5">
+            <div class="text-center">
+                <p>
+                    Não é aconselhado a apagar um matéria, se a troca do nome conseguir resolver o que está querendo fazer prefira só trocar o nome. <br>
+                    Pois o apagamento de um matéria pode levar a erros de registro onde alunos ou professor que tinham essa matéria, ficaram salvos com uma matéria que não existe o que pode impossibilitar de consultas em tais alvos. <br>
+                    Se mesmo assim você quiser apaga-la, clique no botão abaixo:
+                </p>
+                {% set info_string = id_mat + ';materia;False'%}
+                <a class="btn btn-danger" href=" {{ url_for('apagar', info=info_string ) }} "> Apagar Materia </a>
+            </div>
         </div>
-    </div>
+    {% endif %}
 
 {% endblock prof %}

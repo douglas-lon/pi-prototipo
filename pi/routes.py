@@ -164,12 +164,17 @@ def editar_professor(id_professor):
         return redirect(url_for('gerenciar_professor'))
 
     elif request.method == 'GET':
-        materia_nome = Materia.query.filter_by(id=professor.materia).first().nome
+        materia_nome = Materia.query.filter_by(id=professor.materia).first()
+        try:
+            materia_nome = materia_nome.nome
+        except:
+            flash('Professor sem matéria!', 'info')
 
         escolhas_especificas = choices.copy()
         
-        escolhas_especificas.remove((professor.materia, materia_nome))
-        escolhas_especificas.insert(0, (professor.materia, materia_nome))
+        if materia_nome:
+            escolhas_especificas.remove((professor.materia, materia_nome))
+            escolhas_especificas.insert(0, (professor.materia, materia_nome))
 
 
         form.nome.data = professor.nome
@@ -208,19 +213,40 @@ def trocar_senha(id_professor):
 @app.route("/gerenciar/apagar/<info>", methods=["GET", "POST"])
 def apagar(info):
 
-    if info[1] == 'materia':
-        materia = Materia.query.get_or_404(info[0])
-        materia_nome = materia.nome
-        db.session.delete(materia)
-        db.session.commit()
-        flash(f'A matéria {materia_nome} foi apagada', 'success')
-        return redirect(url_for('gerenciar_materia'))
-    elif info[1] == 'professor':
-        professor = Professor.query.get_or_404(info[0])
-        professor_nome = professor.nome
-        db.session.delete(professor)
-        db.session.commit()
-        flash(f'O professor {professor_nome} foi apagado do registro', 'success')
+    info = info
+    list_info = info.split(';')
+
+    try:
+        list_info[0] = int(list_info[0])
+        list_info[2] = eval(list_info[2])
+    except:
+        flash('Por favor acesse essa página da maneira correta!', 'info')
+        return redirect(url_for('professor'))
+
+    if list_info[2]:
+        if list_info[1] == 'materia':
+            materia = Materia.query.get_or_404(list_info[0])
+            materia_nome = materia.nome
+
+            db.session.delete(materia)
+            db.session.commit()
+            flash(f'A matéria {materia_nome} foi apagada', 'success')
+            return redirect(url_for('gerenciar_materia'))
+
+        elif list_info[1] == 'professor':
+            professor = Professor.query.get_or_404(list_info[0])
+            professor_nome = professor.nome
+
+            db.session.delete(professor)
+            db.session.commit()
+            
+            flash(f'O professor {professor_nome} foi apagado do registro', 'success')
+            return redirect(url_for('gerenciar_professor'))
+    
+    return render_template('apagar.html',
+                            titulo='Apagar',
+                            info=info,
+                            user='apagar')
 
 # Inicio das funções sobre matéria
 @app.route("/registrar/materia/", methods=["GET", "POST"])
@@ -261,6 +287,7 @@ def gerenciar_materia():
 
 @app.route("/gerenciar/materia/<id_materia>", methods=["GET", "POST"])
 def editar_materia(id_materia):
+    id_mat = id_materia
 
     materia = Materia.query.get_or_404(id_materia)
     materia_nome = materia.nome
@@ -281,6 +308,7 @@ def editar_materia(id_materia):
     return render_template('trocar.html', 
                             titulo='Trocar Materia', 
                             user='materia',
-                            form=form)
+                            form=form,
+                            id_mat=id_mat)
 
 # Fim das funções sobre matéria

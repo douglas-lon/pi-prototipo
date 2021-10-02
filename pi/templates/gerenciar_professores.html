@@ -22,7 +22,8 @@
                         </td>
                         <td> {{ professor.email }} </td>
                         <td> 
-                            {% if materia.query.filter_by(id=professor.materia).first().nome %}
+                            {% set materia_nome = materia.query.filter_by(id=professor.materia).first() %}
+                            {% if materia_nome %}
                                 {{ materia.query.filter_by(id=professor.materia).first().nome }}
                             {% else %}
                                 Nenhuma/Apagada
