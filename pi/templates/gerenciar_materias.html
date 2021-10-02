@@ -21,7 +21,11 @@
         <div class="text-center">
             {%  for numero_pagina in lista_materias.iter_pages() %}
                 {% if numero_pagina %}
-                    <a class="btn btn-outline-primary btn-sm" href=" {{ url_for('gerenciar_materia', page=numero_pagina) }} "> {{ numero_pagina }} </a>
+                    {% if lista_materias.page == numero_pagina %}
+                        <a class="btn btn-primary btn-sm" href="{{ url_for('gerenciar_materia', page=numero_pagina) }}">{{ numero_pagina }}</a>
+                    {% else %}
+                        <a class="btn btn-outline-primary btn-sm" href=" {{ url_for('gerenciar_materia', page=numero_pagina) }} "> {{ numero_pagina }} </a>
+                    {% endif %}
                 {% else %}
                     ...
                 {% endif %}
@@ -31,9 +35,25 @@
             <small> 
                 Recomanda-se não apagar matérias, pois ao apaga-las professores que tinham está matéria continuaram com ela, sem existir. O que pode causar erros, então ao pensar em apagar um matéria, ou apague os professores com ela antes de apaga-la ou apague depois.
             </small>
-            <form action="{{ url_for('gerenciar_materia') }}" method="POST">
-                <input type="text" placeholder="Id da Matéria" name="text">
-                <input class="btn btn-danger btn-sm" type="submit" value="Apagar Matéria">
+            <form class="row" action="" method="POST">
+                {{ form.hidden_tag() }}
+                <fieldset class="col-md-6">
+                    <div class="">
+                        {% if form.id.errors %}
+                            {{ form.id(class="form-control form-control is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form.id.errors %}
+                                    <span> {{ error }} </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.id(class="form-control form-control") }}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <div class="col-md-6">
+                    {{ form.apagar(class="btn btn-danger ") }}
+                </div>
             </form>
         </div>
     </div>

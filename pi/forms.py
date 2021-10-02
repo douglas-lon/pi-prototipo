@@ -1,9 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, IntegerField
 from wtforms.validators import (DataRequired, 
                                 Email, ValidationError, 
                                 EqualTo, Length,
                                 )
+from flask_login import current_user
 from pi.models import Materia, Professor
 from pi.utils import choices
 
@@ -12,22 +13,28 @@ from pi.utils import choices
 # nomes dos validadores e dos campos estão em inglês mas são
 # autoexplicativos
 class RegistroProfessorForm(FlaskForm):
-    nome = StringField('Nome', validators=[DataRequired()])
-    sobrenome = StringField('Sobrenome', validators=[DataRequired()])
+    nome = StringField('Nome', 
+                        validators=[DataRequired()],
+                        render_kw={"placeholder": "Exemplo: João"}
+                        )
+    sobrenome = StringField('Sobrenome', 
+                            validators=[DataRequired()],
+                            render_kw={"placeholder": "Exemplo: Sousa Santos"})
     # cpf = StringField('CPF', validators=[DataRequired(), Length(min=9, max=14)])
     materia = SelectField('Matéria', 
                            choices=choices)
-    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    email = StringField('E-mail', 
+                         validators=[DataRequired(), Email()],
+                         render_kw={"placeholder": "Exemplo: joão@provedor.com"})
     senha = PasswordField('Senha', 
                            validators=[DataRequired(),
-                                       Length(min=8, max=30)
-                                       ])
+                                       Length(min=8, max=30)],
+                           render_kw={"placeholder": "Minímo 8 digitos"})
     confirma_senha = PasswordField('Confirme a Senha', 
                                     validators=[DataRequired(), 
                                                 EqualTo('senha'),
-                                                Length(min=8, max=30)
-                                                ])
-    enviar = SubmitField('Registrar-Se')
+                                                Length(min=8, max=30)])
+    enviar = SubmitField('Cadastrar')
 
 
     # Valida a senha e impede que uma senha tenha
@@ -43,7 +50,7 @@ class RegistroProfessorForm(FlaskForm):
         email = Professor.query.filter_by(email=email.data).first()
 
         if email:
-            raise ValidationError('Este e-mail já está cadastrado!')
+            raise ValidationError('Este e-mail já está cadastrado! Por favor escolha outro.')
 
 
 class LoginProfessorForm(FlaskForm):
@@ -59,9 +66,9 @@ class LoginProfessorForm(FlaskForm):
 class RegistroMateriaForm(FlaskForm):
     nome = StringField('Nome da Matéria', 
                         validators=[DataRequired(),
-                        Length(min=2)
-                        ])
-    enviar = SubmitField('Registrar Matéria')
+                        Length(min=2)],
+                        render_kw={"placeholder": "Exemplo: Português"})
+    enviar = SubmitField('Adicionar Matéria')
 
     # Verifica se a materia ja está cadastrado, porque ao tentar cadastrar
     # um materia que já está cadastrado da um erro
@@ -69,3 +76,44 @@ class RegistroMateriaForm(FlaskForm):
         materia = Materia.query.filter_by(nome=nome.data).first()
         if materia:
             raise ValidationError('Essa Matéria ja foi adicionada.')
+
+
+class DeleteMateriaForm(FlaskForm):
+    id = StringField('Id da Matéria', 
+                       validators=[DataRequired()],
+                       render_kw={"placeholder": "Id da Matéria"})
+    apagar = SubmitField('Apagar Matéria')
+
+    def validate_id(self, id):
+        try:
+            id_num = int(id.data)
+        except:
+            raise ValidationError('Digite um número Id válido!')
+
+
+class AtualizarProfessorForm(FlaskForm):
+    nome = StringField('Nome', 
+                        validators=[DataRequired()],
+                        render_kw={"placeholder": "Exemplo: João"}
+                        )
+    sobrenome = StringField('Sobrenome', 
+                            validators=[DataRequired()],
+                            render_kw={"placeholder": "Exemplo: Sousa Santos"})
+    # cpf = StringField('CPF', validators=[DataRequired(), Length(min=9, max=14)])
+    materia = SelectField('Matéria', 
+                           choices=choices)
+    email = StringField('E-mail', 
+                         validators=[DataRequired(), Email()],
+                         render_kw={"placeholder": "Exemplo: joão@provedor.com"})
+    enviar = SubmitField('Atualizar')
+
+    # Verifica se o email ja está cadastrado, porque ao tentar cadastrar
+    # um email já cadastrado da um erro
+    id_prof = ''
+
+    def validate_email(self, email):
+
+        professor = Professor.query.filter_by(email=email.data).first()
+        if professor.id != self.id_prof:
+                raise ValidationError('Este e-mail já está cadastrado. Por favor escolha outro.')
+            

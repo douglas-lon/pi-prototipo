@@ -1,11 +1,11 @@
 {% extends "professor_layout.html" %}
 {% block prof %}
-    <div class="col shadow p-4 mb-5 bg-white rounded m-5">
+    <div class="shadow p-4 mb-5 bg-white rounded m-5">
         <form action="" method="POST">
             {{ form.hidden_tag() }}
             <fieldset class="row g-3">
                 {% if user != 'materia' %}
-                    <legend class=""> Cadastrar Um Professor </legend>
+                    <legend class=""> Editar Professor </legend>
                     <div class="col-md-6">
                         {{ form.nome.label(class="form-control-label") }}
 
@@ -61,55 +61,18 @@
                             {{ form.materia(class="form-select form-select-lg") }}
                         {% endif %}
                     </div>
-                    <div class="col-md-6">
-                        {{ form.senha.label(class="form-control-label") }}
-
-                        {% if form.senha.errors %}
-                            {{ form.senha(class="form-control form-control-lg is-invalid")}}
-                            <div class="invalid-feedback">
-                                {% for error in form.senha.errors %}
-                                    <span> {{ error }} </span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.senha(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form.confirma_senha.label(class="form-control-label") }}
-
-                        {% if form.confirma_senha.errors %}
-                            {{ form.confirma_senha(class="form-control form-control-lg is-invalid")}}
-                            <div class="invalid-feedback">
-                                {% for error in form.confirma_senha.errors %}
-                                    <span> {{ error }} </span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.confirma_senha(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                {% else %}
-                    <legend class=""> Adicionar Materia </legend>
-                    <div class="col-md-6">
-                    {{ form.nome.label(class="form-control-label") }}
-
-                    {% if form.nome.errors %}
-                        {{ form.nome(class="form-control form-control-lg is-invalid")}}
-                        <div class="invalid-feedback">
-                            {% for error in form.nome.errors %}
-                                <span> {{ error }} </span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.nome(class="form-control form-control-lg") }}
-                    {% endif %}
-                    </div>
                 {% endif %}
             </fieldset>
-            <div class="col-md-6 mt-2">
-                {{ form.enviar(class="btn btn-primary") }}
+            <div class="row">
+                <div class="col-md-6 mt-2">
+                    {{ form.enviar(class="btn btn-primary") }}
+                    
+                </div>
+                <div class="col text-end mt-2">
+                    <a class="btn btn-primary" href=""> Trocar senha </a>
+                </div>
             </div>
         </form>
     </div>
+
 {% endblock prof %}

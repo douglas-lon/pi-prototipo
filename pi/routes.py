@@ -1,6 +1,6 @@
 from flask import render_template, url_for, abort, redirect, flash, request
 from pi import app, db, bcrypt, login_manager
-from pi.forms import LoginProfessorForm, RegistroProfessorForm, RegistroMateriaForm
+from pi.forms import LoginProfessorForm, RegistroProfessorForm, RegistroMateriaForm, DeleteMateriaForm, AtualizarProfessorForm
 from pi.models import Professor, Materia
 from flask_login import login_user, current_user, logout_user, login_required
 from pi.utils import choices, atualiza_escolhas
@@ -34,8 +34,9 @@ def aluno_consulta(info):
         # Se a informação passada não for uma das acima
         # ele joga um erro de página não encontrada
         abort(404)
-    
 
+
+# Inicio das funções sobre o professor
 @app.route("/professor/")
 @login_required
 def professor():
@@ -92,6 +93,13 @@ def login():
                             titulo='Login', form=form, user="login")
 
 
+@app.route("/logout/")
+def logout():
+    # Sai do usuário logado
+    logout_user()
+    return redirect(url_for('home'))
+
+
 @app.route("/registrar/", methods=["GET", "POST"])
 @login_required
 def registrar():
@@ -123,6 +131,48 @@ def registrar():
                             form=form, user="registro")
 
 
+@app.route("/gerenciar/professor/")
+def gerenciar_professor():
+    page = request.args.get('page', 1, type=int)
+    professores = Professor.query.paginate(per_page=6)
+
+    return render_template('gerenciar_professores.html', 
+                            titulo='Gerenciar Professores', 
+                            user="gerenciar",
+                            lista_professores=professores,
+                            materia=Materia)
+
+
+@app.route("/gerenciar/editar/<id_professor>", methods=["GET", "POST"])
+def editar_professor(id_professor):
+    professor = Professor.query.get_or_404(id_professor)
+
+    form = AtualizarProfessorForm()
+    form.id_prof = professor.id
+    if form.validate_on_submit():
+        professor.nome = form.nome.data
+        professor.sobrenome = form.sobrenome.data
+        professor.email = form.email.data
+        professor.materia = form.materia.data
+        db.session.commit()
+
+        flash(f'O professor {form.nome.data} foi atualizado!', 'success')
+        return redirect(url_for('gerenciar_professor'))
+
+    elif request.method == 'GET':
+        form.nome.data = professor.nome
+        form.sobrenome.data = professor.sobrenome
+        form.email.data = professor.email
+
+    return render_template('editar_professor.html', 
+                            titulo='Editar Professor', 
+                            user="editar",
+                            form=form,
+                            professor=professor)
+# Fim das funções do professor
+
+
+# Inicio das funções sobre matéria
 @app.route("/registrar/materia/", methods=["GET", "POST"])
 @login_required
 def registrar_materia():
@@ -151,40 +201,23 @@ def registrar_materia():
 @login_required
 def gerenciar_materia():
     page = request.args.get('page', 1, type=int)
-    if request.method == 'POST':
-        t = request.form['text']
-        try:
-            t = int(t)
-        except:
-            flash('Digite um número de id!', 'info')
+    form = DeleteMateriaForm()
+    if form.validate_on_submit():
+        materia = Materia.query.get(form.id.data)
+        if materia:
+            materia_nome = materia.nome
+            db.session.delete(materia)
+            db.session.commit()
+            flash(f'A matéria {materia_nome} foi apagada!', 'success')
             return redirect(url_for('gerenciar_materia'))
-        print('===========')
-        print(t)
-        print('===========')
-        return redirect(url_for('apagar_materia', id_materia=t))
+        else:
+            flash('Id de matéria não existe!', 'danger')
 
-    materias = Materia.query.paginate(per_page=8)
-    return render_template('gerenciar.html', 
-                            titulo='Gerenciar Materia', 
-                            user='materia',
-                            lista_materias=materias)
+    materias = Materia.query.paginate(per_page=6)
+    return render_template('gerenciar_materias.html', 
+                            titulo='Gerenciar Materias', 
+                            user='gerenciar',
+                            lista_materias=materias,
+                            form=form)
 
-@app.route("/gerenciar/materia/apagar/<id_materia>", methods=['GET', 'POST'])
-@login_required
-def apagar_materia(id_materia):
-    materia = Materia.query.get_or_404(id_materia)
-    try:
-        materia_nome = materia.nome
-    except:
-        flash('Você tentou apagar um matéria que não existe', 'danger')
-        return redirect(url_for('gerenciar_materia'))
-    db.session.delete(materia)
-    db.session.commit()
-    flash(f'A matéria {materia_nome} foi deletada!', 'success')
-    return redirect(url_for('gerenciar_materia'))
-
-@app.route("/logout/")
-def logout():
-    # Sai do usuário logado
-    logout_user()
-    return redirect(url_for('home'))
+# Fim das funções sobre matéria

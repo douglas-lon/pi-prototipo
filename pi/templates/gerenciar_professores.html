@@ -1,0 +1,55 @@
+{% extends "professor_layout.html" %}
+{% block prof %}
+    <div class="shadow p-4 mb-5 bg-white rounded m-5">
+        <table class="table ">
+            <thead class="border-bottom border-dark" >
+                <tr>
+                    <th scope="col"> Id</th>
+                    <th scope="col"> Nome </th>
+                    <th scope="col"> Sobrenome </th>
+                    <th scope="col"> Email </th>
+                    <th scope="col"> Matéria </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for professor in lista_professores.items %}
+                    <tr>
+                        <td> {{ professor.id }} </td>
+                        <td> {{ professor.nome }} </td>
+                        <td> 
+                            {% set sobrenome_str = professor.sobrenome.split(' ') %}
+                            {{ sobrenome_str[0] }}
+                        </td>
+                        <td> {{ professor.email }} </td>
+                        <td> 
+                            {% if materia.query.filter_by(id=professor.materia).first().nome %}
+                                {{ materia.query.filter_by(id=professor.materia).first().nome }}
+                            {% else %}
+                                Nenhuma/Apagada
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a class="btn-primary btn-sm" href=" {{ url_for('editar_professor', id_professor=professor.id) }} "> Editar </a>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="text-center">
+            {%  for numero_pagina in lista_professores.iter_pages() %}
+                {% if numero_pagina %}
+                    {% if lista_professores.page == numero_pagina %}
+                        <a class="btn btn-primary btn-sm" href="{{ url_for('gerenciar_professor', page=numero_pagina) }}">{{ numero_pagina }}</a>
+                    {% else %}
+                        <a class="btn btn-outline-primary btn-sm" href=" {{ url_for('gerenciar_professor', page=numero_pagina) }} "> {{ numero_pagina }} </a>
+                    {% endif %}
+                {% else %}
+                    ...
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock prof %}
