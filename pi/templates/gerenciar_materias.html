@@ -13,6 +13,9 @@
                     <tr>
                         <td> {{ materia.id }} </td>
                         <td> {{ materia.nome }} </td>
+                        <td>
+                            <a class="btn-primary btn-sm" href=" {{ url_for('editar_materia', id_materia=materia.id) }} "> Editar </a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -31,33 +34,5 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <div class="mt-2">
-            <small> 
-                Recomanda-se não apagar matérias, pois ao apaga-las professores que tinham está matéria continuaram com ela, sem existir. O que pode causar erros, então ao pensar em apagar um matéria, ou apague os professores com ela antes de apaga-la ou apague depois.
-            </small>
-            <form class="row" action="" method="POST">
-                {{ form.hidden_tag() }}
-                <fieldset class="col-md-6">
-                    <div class="">
-                        {% if form.id.errors %}
-                            {{ form.id(class="form-control form-control is-invalid")}}
-                            <div class="invalid-feedback">
-                                {% for error in form.id.errors %}
-                                    <span> {{ error }} </span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.id(class="form-control form-control") }}
-                        {% endif %}
-                    </div>
-                </fieldset>
-                <div class="col-md-6">
-                    {{ form.apagar(class="btn btn-danger ") }}
-                </div>
-            </form>
-        </div>
     </div>
-
-    
-
 {% endblock prof %}

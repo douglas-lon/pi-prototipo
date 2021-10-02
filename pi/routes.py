@@ -1,6 +1,9 @@
 from flask import render_template, url_for, abort, redirect, flash, request
 from pi import app, db, bcrypt, login_manager
-from pi.forms import LoginProfessorForm, RegistroProfessorForm, RegistroMateriaForm, DeleteMateriaForm, AtualizarProfessorForm
+from pi.forms import (LoginProfessorForm, RegistroProfessorForm, 
+                      RegistroMateriaForm,AtualizarProfessorForm, 
+                      TrocarSenhaProfessorForm,
+                      EditarMateriaForm)
 from pi.models import Professor, Materia
 from flask_login import login_user, current_user, logout_user, login_required
 from pi.utils import choices, atualiza_escolhas
@@ -146,9 +149,10 @@ def gerenciar_professor():
 @app.route("/gerenciar/editar/<id_professor>", methods=["GET", "POST"])
 def editar_professor(id_professor):
     professor = Professor.query.get_or_404(id_professor)
-
+    
     form = AtualizarProfessorForm()
     form.id_prof = professor.id
+    
     if form.validate_on_submit():
         professor.nome = form.nome.data
         professor.sobrenome = form.sobrenome.data
@@ -160,17 +164,63 @@ def editar_professor(id_professor):
         return redirect(url_for('gerenciar_professor'))
 
     elif request.method == 'GET':
+        materia_nome = Materia.query.filter_by(id=professor.materia).first().nome
+
+        escolhas_especificas = choices.copy()
+        
+        escolhas_especificas.remove((professor.materia, materia_nome))
+        escolhas_especificas.insert(0, (professor.materia, materia_nome))
+
+
         form.nome.data = professor.nome
         form.sobrenome.data = professor.sobrenome
         form.email.data = professor.email
+        form.materia.choices = escolhas_especificas
+    
 
     return render_template('editar_professor.html', 
                             titulo='Editar Professor', 
                             user="editar",
+                            id_professor = professor.id,
+                            form=form)
+
+@app.route("/gerenciar/editar/senha/<id_professor>", methods=["GET", "POST"])
+def trocar_senha(id_professor):
+    professor = Professor.query.get_or_404(id_professor)
+    form = TrocarSenhaProfessorForm()
+
+    if form.validate_on_submit():
+        senha_cript = bcrypt.generate_password_hash(form.senha.data).decode('utf-8')
+        professor.senha = senha_cript
+        db.session.commit()
+
+        flash(f'A senha do professor {professor.nome} foi alterada!', 'success')
+        return redirect(url_for('gerenciar_professor'))
+
+    return render_template('trocar.html', 
+                            titulo='Trocar Senha', 
+                            user="editar",
                             form=form,
-                            professor=professor)
+                            professor_nome=professor.nome)
 # Fim das funções do professor
 
+
+@app.route("/gerenciar/apagar/<info>", methods=["GET", "POST"])
+def apagar(info):
+
+    if info[1] == 'materia':
+        materia = Materia.query.get_or_404(info[0])
+        materia_nome = materia.nome
+        db.session.delete(materia)
+        db.session.commit()
+        flash(f'A matéria {materia_nome} foi apagada', 'success')
+        return redirect(url_for('gerenciar_materia'))
+    elif info[1] == 'professor':
+        professor = Professor.query.get_or_404(info[0])
+        professor_nome = professor.nome
+        db.session.delete(professor)
+        db.session.commit()
+        flash(f'O professor {professor_nome} foi apagado do registro', 'success')
 
 # Inicio das funções sobre matéria
 @app.route("/registrar/materia/", methods=["GET", "POST"])
@@ -201,23 +251,36 @@ def registrar_materia():
 @login_required
 def gerenciar_materia():
     page = request.args.get('page', 1, type=int)
-    form = DeleteMateriaForm()
-    if form.validate_on_submit():
-        materia = Materia.query.get(form.id.data)
-        if materia:
-            materia_nome = materia.nome
-            db.session.delete(materia)
-            db.session.commit()
-            flash(f'A matéria {materia_nome} foi apagada!', 'success')
-            return redirect(url_for('gerenciar_materia'))
-        else:
-            flash('Id de matéria não existe!', 'danger')
 
     materias = Materia.query.paginate(per_page=6)
     return render_template('gerenciar_materias.html', 
                             titulo='Gerenciar Materias', 
                             user='gerenciar',
-                            lista_materias=materias,
+                            lista_materias=materias)
+
+
+@app.route("/gerenciar/materia/<id_materia>", methods=["GET", "POST"])
+def editar_materia(id_materia):
+
+    materia = Materia.query.get_or_404(id_materia)
+    materia_nome = materia.nome
+    form = EditarMateriaForm()
+    if form.validate_on_submit():
+        materia.nome = form.nome.data
+        db.session.commit()
+        flash(f'O nome da matéria {materia_nome} foi alterada para {form.nome.data}!', 'success')
+
+        atualiza_escolhas(choices)
+
+        return redirect(url_for('gerenciar_materia'))
+
+    elif request.method == 'GET':
+        form.nome.data = materia.nome
+
+
+    return render_template('trocar.html', 
+                            titulo='Trocar Materia', 
+                            user='materia',
                             form=form)
 
 # Fim das funções sobre matéria

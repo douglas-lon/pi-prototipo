@@ -78,17 +78,12 @@ class RegistroMateriaForm(FlaskForm):
             raise ValidationError('Essa Matéria ja foi adicionada.')
 
 
-class DeleteMateriaForm(FlaskForm):
-    id = StringField('Id da Matéria', 
-                       validators=[DataRequired()],
-                       render_kw={"placeholder": "Id da Matéria"})
-    apagar = SubmitField('Apagar Matéria')
+class EditarMateriaForm(FlaskForm):
+    nome = StringField('Nome da Matéria', 
+                        validators=[DataRequired(),
+                        Length(min=2)])
+    trocar = SubmitField('Trocar nome da Matéria')
 
-    def validate_id(self, id):
-        try:
-            id_num = int(id.data)
-        except:
-            raise ValidationError('Digite um número Id válido!')
 
 
 class AtualizarProfessorForm(FlaskForm):
@@ -105,7 +100,7 @@ class AtualizarProfessorForm(FlaskForm):
     email = StringField('E-mail', 
                          validators=[DataRequired(), Email()],
                          render_kw={"placeholder": "Exemplo: joão@provedor.com"})
-    enviar = SubmitField('Atualizar')
+    atualizar = SubmitField('Atualizar')
 
     # Verifica se o email ja está cadastrado, porque ao tentar cadastrar
     # um email já cadastrado da um erro
@@ -116,4 +111,15 @@ class AtualizarProfessorForm(FlaskForm):
         professor = Professor.query.filter_by(email=email.data).first()
         if professor.id != self.id_prof:
                 raise ValidationError('Este e-mail já está cadastrado. Por favor escolha outro.')
-            
+
+
+class TrocarSenhaProfessorForm(FlaskForm):
+    senha = PasswordField('Nova Senha', 
+                           validators=[DataRequired(),
+                                       Length(min=8, max=30)],
+                           render_kw={"placeholder": "Minímo 8 digitos"})
+    confirma_senha = PasswordField('Confirme a Nova Senha', 
+                                    validators=[DataRequired(), 
+                                                EqualTo('senha'),
+                                                Length(min=8, max=30)])
+    trocar = SubmitField('Trocar')

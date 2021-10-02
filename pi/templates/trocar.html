@@ -1,0 +1,75 @@
+{% extends "professor_layout.html" %}
+{% block prof %}
+    <div class="shadow p-4 mb-5 bg-white rounded m-5">
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
+            <fieldset class="row g-3">
+                {% if user != 'materia' %}
+                    <legend class=""> Trocar Senha de {{ professor_nome }} </legend>
+                    <div class="col-md-6">
+                    {{ form.senha.label(class="form-control-label") }}
+
+                        {% if form.senha.errors %}
+                            {{ form.senha(class="form-control form-control-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form.senha.errors %}
+                                    <span> {{ error }} </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.senha(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.confirma_senha.label(class="form-control-label") }}
+
+                        {% if form.confirma_senha.errors %}
+                            {{ form.confirma_senha(class="form-control form-control-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form.confirma_senha.errors %}
+                                    <span> {{ error }} </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.confirma_senha(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="">
+                    <legend class=""> Trocar nome da Matéria </legend>
+                    <div class="col-md-6">
+                        {{ form.nome.label(class="form-control-label") }}
+
+                        {% if form.nome.errors %}
+                            {{ form.nome(class="form-control form-control-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form.nome.errors %}
+                                    <span> {{ error }} </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.nome(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    </div>
+                {% endif %}
+            </fieldset>
+            <div class="row">
+                <div class="col mt-2">
+                    {{ form.trocar(class="btn btn-primary") }}
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="shadow p-4 mb-5 bg-white rounded m-5">
+        <div class="text-center">
+            <p>
+                Não é aconselhado a apagar um matéria, se a troca do nome conseguir resolver o que está querendo fazer prefira só trocar o nome. <br>
+                Pois o apagamento de um matéria pode levar a erros de registro onde alunos ou professor que tinham essa matéria, ficaram salvos com uma matéria que não existe o que pode impossibilitar de consultas em tais alvos. <br>
+                Se mesmo assim você quiser apaga-la, clique no botão abaixo:
+            </p>
+            <a class="btn btn-danger" href=""> Apagar Materia </a>
+        </div>
+    </div>
+
+{% endblock prof %}

@@ -65,11 +65,11 @@
             </fieldset>
             <div class="row">
                 <div class="col-md-6 mt-2">
-                    {{ form.enviar(class="btn btn-primary") }}
+                    {{ form.atualizar(class="btn btn-primary") }}
                     
                 </div>
                 <div class="col text-end mt-2">
-                    <a class="btn btn-primary" href=""> Trocar senha </a>
+                    <a class="btn btn-primary" href=" {{url_for('trocar_senha', id_professor=id_professor)}} "> Trocar senha </a>
                 </div>
             </div>
         </form>
