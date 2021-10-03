@@ -1,0 +1,70 @@
+{% extends "professor_layout.html" %}
+{% block prof %}
+    <div class="col shadow p-4 mb-5 bg-white rounded m-5">
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
+            <fieldset class="row ">
+                <legend class=""> Adicionar Aluno </legend>
+                <div class="col-md-6">
+                    {{ form.nome.label(class="form-control-label") }}
+
+                    {% if form.nome.errors %}
+                        {{ form.nome(class="form-control form-control-lg is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form.nome.errors %}
+                                <span> {{ error }} </span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.nome(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    {{ form.sobrenome.label(class="form-control-label") }}
+
+                    {% if form.sobrenome.errors %}
+                        {{ form.sobrenome(class="form-control form-control-lg is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form.sobrenome.errors %}
+                                <span> {{ error }} </span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.sobrenome(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="col">
+                    {{ form.ra.label(class="form-control-label") }}
+
+                    {% if form.ra.errors %}
+                        {{ form.ra(class="form-control form-control-lg is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form.ra.errors %}
+                                <span> {{ error }} </span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.ra(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="col">
+                    {{ form.turma.label(class="form-control-label") }}
+
+                    {% if form.turma.errors %}
+                        {{ form.turma(class="form-control form-control-lg is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form.turma.errors %}
+                                <span> {{ error }} </span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.turma(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="col-md-6 mt-2">
+                {{ form.adicionar(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+{% endblock prof %}

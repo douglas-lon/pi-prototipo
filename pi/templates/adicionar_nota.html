@@ -1,0 +1,84 @@
+{% extends "professor_layout.html" %}
+{% block prof %}
+    <div class="col shadow p-4 mb-5 bg-white rounded m-5">
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
+            <fieldset class="row g-3">
+                    <legend class=""> Cadastrar Um Professor </legend>
+                    <div class="col-md-6">
+                        {{ form.ra.label(class="form-control-label") }}
+
+                        {% if form.ra.errors %}
+                            {{ form.ra(class="form-control form-control-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form.ra.errors %}
+                                    <span> {{ error }} </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.ra(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.nota.label(class="form-control-label") }}
+
+                        {% if form.nota.errors %}
+                            {{ form.nota(class="form-control form-control-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form.nota.errors %}
+                                    <span> {{ error }} </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.nota(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.id_materia.label(class="form-control-label") }}
+
+                        {% if form.id_materia.errors %}
+                            {{ form.id_materia(class="form-control form-control-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form.id_materia.errors %}
+                                    <span> {{ error }} </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.id_materia(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-2">
+                        {{ form.bimestre.label(class="form-control-label") }}
+                        {% if form.bimestre.errors %}
+                            {{ form.bimestre(class="form-select form-select-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form.bimestre.errors %}
+                                    <span> {{ error }} </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.bimestre(class="form-select form-select-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-2">
+                        {{ form.ano.label(class="form-control-label") }}
+
+                        {% if form.ano.errors %}
+                            {{ form.ano(class="form-control form-control-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form.ano.errors %}
+                                    <span> {{ error }} </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.ano(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+            </fieldset>
+            <div class="col-md-6 mt-2">
+                {{ form.adicionar(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+{% endblock prof %}

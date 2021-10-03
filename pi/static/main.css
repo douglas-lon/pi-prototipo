@@ -30,3 +30,24 @@ ul {
 a {
   text-decoration: none;
 }
+
+/* situação */
+.baixo-rendimento {
+  color: rgb(211, 2, 2);
+}
+
+.resultado-insatisfatorio {
+  color: rgb(236, 221, 12);
+}
+
+.resultado-satisfatorio {
+  color: rgb(61, 192, 0);
+}
+
+.resultado-acima-da-media {
+  color: rgb(252, 171, 21);
+}
+
+.sem-notas {
+  color: rgb(19, 135, 230);
+}

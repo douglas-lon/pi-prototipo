@@ -32,7 +32,6 @@ class Materia(db.Model):
         return f"Materia('{self.id}', '{self.nome}')"
 
 
-
 class Aluno(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ra = db.Column(db.Integer, unique=True, nullable=False)
@@ -43,6 +42,7 @@ class Aluno(db.Model):
     def __repr__(self):
         return f"Aluno('{self.id}', '{self.ra}', '{self.nome}')"
 
+
 class NotaAluno(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_aluno = db.Column(db.Integer, db.ForeignKey('aluno.id'), nullable=False)
@@ -52,4 +52,4 @@ class NotaAluno(db.Model):
     ano = db.Column(db.SmallInteger, nullable=False, default=date.today().year)
 
     def __repr__(self):
-        return f"Nota('{self.id}', '{self.id_aluno}', '{self.id_materia}', '{self.nota}', '{self.bimestre}')"
+        return f"Nota('{self.id}', '{self.id_aluno}', '{self.id_materia}', '{self.nota}', '{self.bimestre}', '{self.ano}')"

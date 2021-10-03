@@ -5,7 +5,7 @@ from wtforms.validators import (DataRequired,
                                 EqualTo, Length,
                                 )
 from flask_login import current_user
-from pi.models import Materia, Professor
+from pi.models import Materia, Professor, Aluno
 from pi.utils import choices
 
 
@@ -123,3 +123,56 @@ class TrocarSenhaProfessorForm(FlaskForm):
                                                 EqualTo('senha'),
                                                 Length(min=8, max=30)])
     trocar = SubmitField('Trocar')
+
+
+class ConsultarAlunoForm(FlaskForm):
+    ra = IntegerField('Ra do Aluno', 
+                       validators=[DataRequired()],
+                       render_kw={"placeholder": "Exemplo: 78956423"})
+    ano = IntegerField('Ano')
+
+    consultar = SubmitField('Consultar')
+
+
+class AdicionarNotaForm(FlaskForm):
+    ra = IntegerField('Ra do Aluno', 
+                       validators=[DataRequired()],
+                       render_kw={"placeholder": "Exemplo: 78956423"})
+    id_materia = IntegerField('Id da Matéria', 
+                       validators=[DataRequired()],
+                       render_kw={"placeholder": "Exemplo: 2; 'Acessível no Gerenciar Matéria'"})
+    nota = StringField('Nota', 
+                        validators=[DataRequired()],
+                        render_kw={"placeholder": "Exemplo: 8.55"}
+                        )
+    bimestre = SelectField('Bimestre',
+                            choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4')])
+    ano = IntegerField('Ano',
+                       validators=[DataRequired()])
+
+    adicionar = SubmitField('Adicionar')
+
+
+class AdicionarAlunoForm(FlaskForm):
+    ra = IntegerField('Ra', 
+                       validators=[DataRequired()],
+                       render_kw={"placeholder": "Exemplo: 78956423"})
+    nome = StringField('Nome', 
+                        validators=[DataRequired()],
+                        render_kw={"placeholder": "Exemplo: Rennan"}
+                        )
+    sobrenome = StringField('Sobrenome', 
+                            validators=[DataRequired()],
+                            render_kw={"placeholder": "Exemplo: Guilherme Duarte"})
+    turma = StringField('Turma', 
+                            validators=[DataRequired()],
+                            render_kw={"placeholder": "Exemplo:2 ou 2-A"})
+
+    
+    adicionar = SubmitField('Adicionar')
+
+    def validate_ra(self, ra):
+        aluno = Aluno.query.filter_by(ra=ra.data).first()
+
+        if aluno:
+            raise ValidationError('Um aluno com este RA já existe !')
