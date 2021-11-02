@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block conteudo %}
-    <h1 class="position-absolute top-0 start-50 translate-middle-x mt-4"> Projeto PI </h1>
+    <h1 id="escola-nome" class="position-absolute top-0 start-50 translate-middle-x mt-4 text-center"> E.E Pe José Narciso Vieira Ehrenberg </h1>
     <div class="vertical-center justify-content-center ">
-        <div class="container shadow p-4 mb-5 bg-white rounded m-5" style="height: 350px; width: 350px;">
+        <div class="container shadow p-4 mb-5 bg-container rounded m-5" style="height: 350px; width: 350px;">
             <div class="text-center pt-4">
-                <h5 class="mt-5"> Bem vindo </h5>
+                <h5 class="mt-5 fw-bold"> Bem vindo </h5>
                 <p>
                     O que você é:
                 </p>
@@ -13,6 +13,6 @@
                     <a class="btn btn-primary" href="{{url_for('login')}}" class="card-link"> Professor </a>
                 </p>
             </div>
-        <div>
+        </div>
     </div>
 {% endblock conteudo %}

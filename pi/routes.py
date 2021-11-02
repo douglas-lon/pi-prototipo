@@ -120,6 +120,27 @@ def consultar_aluno_ra():
                             materia=Materia,
                             user="professor")
 
+@app.route("/consultar/professor/", methods=["GET", "POST"])
+def consultar_professor():
+    form = ConsultarAlunoForm()
+
+    if form.validate_on_submit():
+        aluno = Aluno.query.filter_by(ra=form.ra.data).first()
+        if aluno:
+            return redirect(url_for('consultar_aluno_ra', 
+                                    ra_aluno=form.ra.data,
+                                    ano=form.ano.data,
+                                    bimestre=1))
+        else:
+            flash('Aluno com este RA não foi encontrado!', 'info')
+
+    form.ano.data = date.today().year
+    
+    return render_template('aluno_consulta.html', 
+                            titulo='Consultar Aluno',
+                            form=form,
+                            user="aluno")
+
 
 @app.route("/professor/registrar/nota/", methods=["GET", "POST"])
 def adicionar_nota():

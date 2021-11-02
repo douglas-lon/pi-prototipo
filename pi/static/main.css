@@ -1,9 +1,49 @@
 @charset "UTF-8";
 
+@import url('https://fonts.googleapis.com/css2?family=Cookie&display=swap');
+
+#escola-nome {
+  font-family: 'Cookie', cursive;
+  font-size: 3em;
+}
+
 html,
 body {
   height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color:  #F2F0D8;
 }
+
+
+.btn.btn-primary:hover,
+.btn.btn-primary:focus,
+.btn.btn-primary:active,
+.btn.btn-primary:visited,
+.btn.btn-primary {
+  color: #ffffff;
+  background-color: #f27730e5;
+  border-color: #f27730e5;
+}
+
+
+.btn.btn-outline-primary {
+  color:  #f27730e5;
+  background-color: transparent;
+  background-image: none;
+  border-color: #f27730e5;
+}
+
+.btn-outline-primary:hover {
+  color: white;
+  background-color: #ec8448e5;
+  border-color: #f27730e5;
+}
+
+.btn-outline-primary:focus,
+.btn-outline-primary.focus {
+    box-shadow: 0 0 0 .2rem rgba(242, 119, 48, 0.5);
+}
+
 
 .vertical-center {
     min-height: 100%; 
@@ -50,4 +90,20 @@ a {
 
 .sem-notas {
   color: rgb(19, 135, 230);
+}
+
+.bg-navbar-now {
+  background-color: rgb(241, 238, 192)
+}
+
+.bg-container {
+  background-color: #ffffff;
+}
+
+.menu-txt {
+  color: #1797b4;
+}
+
+.bg-footer {
+  background-color: #97b6c0;
 }
