@@ -133,6 +133,14 @@ class ConsultarAlunoForm(FlaskForm):
 
     consultar = SubmitField('Consultar')
 
+class ConsultaProfessorForm(FlaskForm):
+    nome = StringField('Primeiro Nome', 
+                        validators=[DataRequired()],
+                        render_kw={"placeholder": "Exemplo: João"}
+                        )
+
+    consultar = SubmitField('Consultar')
+
 
 class AdicionarNotaForm(FlaskForm):
     ra = IntegerField('Ra do Aluno', 

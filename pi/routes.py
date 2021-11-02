@@ -5,7 +5,7 @@ from pi.forms import (LoginProfessorForm, RegistroProfessorForm,
                       RegistroMateriaForm,AtualizarProfessorForm, 
                       TrocarSenhaProfessorForm,
                       EditarMateriaForm, AdicionarAlunoForm, ConsultarAlunoForm,
-                      AdicionarNotaForm)
+                      AdicionarNotaForm, ConsultaProfessorForm)
 from pi.models import NotaAluno, Professor, Materia, Aluno
 from flask_login import login_user, current_user, logout_user, login_required
 from pi.utils import choices, atualiza_escolhas, calcular_desempenho
@@ -122,12 +122,12 @@ def consultar_aluno_ra():
 
 @app.route("/consultar/professor/", methods=["GET", "POST"])
 def consultar_professor():
-    form = ConsultarAlunoForm()
+    form = ConsultaProfessorForm()
 
     if form.validate_on_submit():
-        aluno = Aluno.query.filter_by(ra=form.ra.data).first()
-        if aluno:
-            return redirect(url_for('consultar_aluno_ra', 
+        professor = Professor.query.filter_by(nome=form.nome.data).all()
+        if professor:
+            return redirect(url_for('consultar_professor', 
                                     ra_aluno=form.ra.data,
                                     ano=form.ano.data,
                                     bimestre=1))
@@ -155,15 +155,26 @@ def adicionar_nota():
             flash('Nenhum aluno com este RA encontrado', 'info')
             return redirect(url_for('adicionar_nota'))
 
+        nota_existe = NotaAluno.query.filter_by(id_materia=form.id_materia.data, 
+                                                id_aluno=id_aluno, 
+                                                bimestre=form.bimestre.data, 
+                                                ano=form.ano.data).first()
+        if nota_existe:
+            nota_existe.nota = form.nota.data
+            db.session.commit()
+        else:
+            nota = NotaAluno(id_aluno=id_aluno, 
+                            id_materia=form.id_materia.data,
+                            nota=form.nota.data,
+                            bimestre=form.bimestre.data,
+                            ano=form.ano.data)
+
+            db.session.add(nota)
+            db.session.commit()
         
-        nota = NotaAluno(id_aluno=id_aluno, 
-                         id_materia=form.id_materia.data,
-                         nota=form.nota.data,
-                         bimestre=form.bimestre.data,
-                         ano=form.ano.data)
         
-        db.session.add(nota)
-        db.session.commit()
+
+        
 
         flash(f'Nota de {form.nota.data} foi adicionado para o aluno {aluno.nome}!', 'success')
         return redirect(url_for('professor'))

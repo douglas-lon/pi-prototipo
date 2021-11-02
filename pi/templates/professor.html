@@ -1,7 +1,10 @@
 {% extends "professor_layout.html"%}
 {% block prof %}
-    <p>
+    <div class="text-center border-bottom border-3 m-2 border-info p-3 rounded-circle" >
+        <img src="{{ url_for('static', filename='logo.png')}}" alt="logoEscola" >
+    </div>
+    <p class="text-center">
         Bem vindo
-        você pode acessar todas as funções pelo menu a esquerda, em caso de dúvida sobre alguma função você pode acessar a página de ajuda no botão abaixo. 
+        você pode acessar todas as funções pelo menu a esquerda.
     </p>
 {% endblock prof %}

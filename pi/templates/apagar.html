@@ -5,8 +5,8 @@
         <div class="row justify-content-between p-5">
             {% set info_list = info.split(';') %}
             {% set info_string = info_list[0] + ';' + info_list[1] + ';' + 'True'  %}
-            <a class="btn btn-danger btn-lg col-4" href="{{url_for('apagar', info=info_string )}}"> Sim  </a>
-            <a class="btn btn-primary btn-lg col-4" href=" {{url_for('professor')}} "> Não </a>
+            <a class="btn btn-primary btn-lg col-4" href="{{url_for('apagar', info=info_string )}}"> Sim  </a>
+            <a class="btn btn-secondary btn-lg col-4" href=" {{url_for('professor')}} "> Não </a>
         </div>
     </div>
 {% endblock prof %}

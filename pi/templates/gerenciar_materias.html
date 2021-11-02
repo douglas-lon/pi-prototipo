@@ -14,7 +14,7 @@
                         <td> {{ materia.id }} </td>
                         <td> {{ materia.nome }} </td>
                         <td>
-                            <a class="btn-primary btn-sm" href=" {{ url_for('editar_materia', id_materia=materia.id) }} "> Editar </a>
+                            <a class="btn btn-primary btn-sm" href=" {{ url_for('editar_materia', id_materia=materia.id) }} "> Editar </a>
                         </td>
                     </tr>
                 {% endfor %}

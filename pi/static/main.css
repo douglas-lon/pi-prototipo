@@ -14,8 +14,6 @@ body {
   background-color:  #F2F0D8;
 }
 
-
-.btn.btn-primary:hover,
 .btn.btn-primary:focus,
 .btn.btn-primary:active,
 .btn.btn-primary:visited,
@@ -25,6 +23,10 @@ body {
   border-color: #f27730e5;
 }
 
+.btn.btn-primary:hover {
+  background-color: #b45924e5;
+  border-color: #b45924e5;
+}
 
 .btn.btn-outline-primary {
   color:  #f27730e5;
