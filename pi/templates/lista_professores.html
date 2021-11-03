@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block conteudo %}
+    <div class="shadow p-4 mb-5 bg-white rounded m-5">
+        <table class="table ">
+            <thead class="border-bottom border-dark" >
+                <tr>
+                    <th scope="col"> Nome </th>
+                    <th scope="col"> Sobrenome </th>
+                    <th scope="col"> Matéria </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for professor in professores %}
+                    <tr>
+                        <td> {{ professor.nome }} </td>
+                        <td> 
+                            {% set sobrenome_str = professor.sobrenome.split(' ') %}
+                            {{ sobrenome_str[0] }}
+                        </td>
+                        <td> 
+                            {% set materia_nome = materia.query.filter_by(id=professor.materia).first() %}
+                            {% if materia_nome %}
+                                {{ materia.query.filter_by(id=professor.materia).first().nome }}
+                            {% else %}
+                                Nenhuma/Apagada
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock conteudo %}

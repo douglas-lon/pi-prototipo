@@ -125,19 +125,18 @@ def consultar_professor():
     form = ConsultaProfessorForm()
 
     if form.validate_on_submit():
-        professor = Professor.query.filter_by(nome=form.nome.data).all()
-        if professor:
-            return redirect(url_for('consultar_professor', 
-                                    ra_aluno=form.ra.data,
-                                    ano=form.ano.data,
-                                    bimestre=1))
-        else:
-            flash('Aluno com este RA não foi encontrado!', 'info')
+        professor = Professor.query.filter_by(nome=form.nome.data.strip()).all()
 
-    form.ano.data = date.today().year
+        if professor:
+            return render_template('lista_professores.html', 
+                                    professores=professor,
+                                    materia=Materia,
+                                    user='aluno')
+        else:
+            flash('Nenhum professor com esse nome encontrado', 'info')
     
-    return render_template('aluno_consulta.html', 
-                            titulo='Consultar Aluno',
+    return render_template('consultar_professor.html', 
+                            titulo='Consultar Professor',
                             form=form,
                             user="aluno")
 
@@ -471,3 +470,6 @@ def editar_materia(id_materia):
 
 
 # Fim das funções sobre matéria
+@app.errorhandler(404)
+def error_404(error):
+    return render_template('errors/404.html',user='normal'), 404
