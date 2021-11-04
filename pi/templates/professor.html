@@ -3,8 +3,26 @@
     <div class="text-center border-bottom border-3 m-2 border-info p-3 rounded-circle" >
         <img src="{{ url_for('static', filename='logo.png')}}" alt="logoEscola" >
     </div>
-    <p class="text-center">
-        Bem vindo
-        você pode acessar todas as funções pelo menu a esquerda.
+    <p class="text-center mt-4 fw-bold">
+        Bem vindo! <br>
+        Você pode acessar todas as funções pelo menu a esquerda.
+
     </p>
+    <div class="container m-4 ps-5">
+
+        <p>
+            <img src="{{ url_for('static', filename='icons8-student-64.png')}}" alt="iconeAluno">
+            Na parte do aluno, você poderá cadastrar um aluno e manter controle da situação dele com facilidade.
+        </p>
+
+        <p>
+            <img src="{{ url_for('static', filename='icons8-teacher-64.png')}}" alt="iconeProfessor">
+            Na parte do professor, você poderá adicionar um professor ou editar/apagar algum professor também com facilidade.
+        </p>
+
+        <p>
+            <img src="{{ url_for('static', filename='icons8-elective-40.png')}}" alt="iconeMateria" width="64px" height="64px">
+            Na parte de matéria, você podera adicionar, remover e gerenciar com clareza e sem problemas.
+        </p>
+    </div>
 {% endblock prof %}

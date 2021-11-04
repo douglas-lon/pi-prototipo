@@ -201,7 +201,8 @@ def professor():
     # para impedir outras pessoas de mexer nas informações 
     titulo = "Professor"
     return render_template('professor.html', 
-                           titulo=titulo, user='professor')
+                           titulo=titulo, user='professor',
+                           link='sim')
 
 
 @app.route("/login/", methods=["GET", "POST"])
