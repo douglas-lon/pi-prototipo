@@ -3,14 +3,14 @@
     <div class=" w-25 mt-3 mx-auto text-center">
         <h2>{{aluno.nome}}</h2>
         <p class="fw-bold">    
-            RA: {{aluno.ra}}
-            Ano: {{ano}}
+            RA: <span class="fw-normal">{{aluno.ra}}</span>
+            Ano: <span class="fw-normal">{{ano}}</span>
         </p>
     </div>
-    <div class="shadow p-2 bg-white rounded m-5 ">
+    <div class=" shadow-sm p-2 bg-white rounded m-5 ">
         <h2>Situação: <span class="{{cor}}" >{{desempenho}}</span> </h2>
     </div>
-    <div class="shadow p-4 bg-white rounded m-5">
+    <div class="shadow-sm p-2 bg-white rounded m-5">
         <h3 class=" text-center "> Bimestre {{bimestre}} </h3>
         <table class="table ">
             <thead class="border-bottom border-dark" >
@@ -27,24 +27,31 @@
                     <td> Média </td>
                     {% set todas = materia.query.all() %}
                     {% for mat in range(0, todas| length) %}
-                        {% set aux = namespace(mostar=False) %}
+                        {% set aux = namespace(mostrar=False) %}
                         {% for nota in notas_ano %}
                             {% if nota.id_materia == todas[mat].id %}
-                                <td> {{nota.nota}} </td>
+                                {% set nota_num = nota.nota | int %}
+                                {% if nota_num < 5 %}
+                                    <td style="color: rgba(233, 27, 27, 0.932) ;"> {{ nota.nota}} </td>
+                                {% else %}
+                                    <td> {{nota.nota}} </td>
+                                {% endif %}
                                 {% set aux.mostrar = True %}
                             {% endif %}
                         {% endfor %}
                         {% if not aux.mostrar %}
-                            <td style="font-size: small;"> Não adicionada </td>
+                            <td style="font-size: small;">Não adicionada </td>
                         {% endif %}
                     {% endfor %}
                 </tr>
+                <!--
                 <tr> 
                     <td> Faltas </td>
                 </tr>
                 <tr> 
                     <td> Ausencias <br> Compensadas </td>
                 </tr>
+                -->
             </tbody>
         </table>
     </div>
